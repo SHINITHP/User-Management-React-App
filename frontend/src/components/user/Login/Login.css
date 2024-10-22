@@ -93,7 +93,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    height: 50%;
+    min-height: 50%;
     /* background-color: antiquewhite; */
   }
   
@@ -103,30 +103,53 @@
   .input_wrapper {
     width: 70%;
     position: relative;
+    margin-bottom: 30px; /* Add spacing between input fields */
   }
   
-  .input-icon{
+  .input-icon {
     position: absolute;
     left: 10px;
-    top: 50%;
+    top: 43%;
     transform: translateY(-50%);
     color: gray;
+    pointer-events: none; /* Ensure the icon doesn't interfere with input */
   }
   
   .form_inputs {
     width: 100%;
-    padding: 10px 10px 10px 35px; /* Adjust padding to leave space for icon */
+    padding: 10px 10px 10px 35px; /* Leave space for the icon */
     font-size: 16px;
     outline: none;
     border: none;
     border-bottom: 1px solid #ccc;
-    /* border-radius: 5px; */
   }
   
   .form_inputs:focus {
-    border-color: black; /* Add focus effect */
+    border-color: black;
     outline: none;
   }
+  
+  .error-message {
+    position: absolute;
+    bottom: -10px; /* Position the error message below the input */
+    left: 0;
+    color: red;
+    font-size: 10px;
+    background-color: transparent; /* Optional: no background for better design */
+    padding-left: 5px;
+  }
+  
+  /* Adjustments to avoid icon shift when error message appears */
+  .input_wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input_wrapper .form_inputs {
+    margin-bottom: 5px; /* Give space between input and error message */
+  }
+  
+
   .btn-Submit{
     margin-top: 10px;
     width: 70%;
@@ -150,8 +173,8 @@
     padding-top: 5px;
     color: rgb(98, 97, 97);
     cursor: pointer;
-  
   }
+  
   .toggle-password input {
     cursor: pointer;
     margin-right: 5px;
