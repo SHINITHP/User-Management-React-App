@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const cookieParser = require('cookie-parser'); 
 require('dotenv').config();
 const userRoutes = require('./controller/userController');
 const adminRoutes = require('./controller/adminController');
@@ -14,8 +15,9 @@ mongoose.connect(process.env.MONGODB_URL, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
+app.use(cookieParser());
 
-app.use(cors());
+app.use(cors({ origin:'http://localhost:5173', credentials: true }));
 app.use(express.json());
 
 app.use('/admin', adminRoutes);

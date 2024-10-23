@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import Navbar from "../Navbar/Navbar";
+import { ToastContainer } from "react-toastify";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <>
+      <Navbar />
+      <ToastContainer />
+    </>
+  );
+};
 
-export default Home
+export default Home;
