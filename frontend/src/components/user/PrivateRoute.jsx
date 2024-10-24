@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
-  const [data, setData] = useState();
-
  
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("userId");

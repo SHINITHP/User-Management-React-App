@@ -98,8 +98,8 @@ const Login = () => {
             <p className="error-message" style={{ bottom: "16px" }}></p>
 
             <label className="toggle-password">
-              <input type="checkbox" />
-              Show Password
+              {/* <input type="checkbox" />
+              Show Password */}
             </label>
           </div>
           <button type="submit" className="btn-Submit" disabled={loading}>

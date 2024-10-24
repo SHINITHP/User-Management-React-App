@@ -42,18 +42,23 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const isUserExist = await User.findOne({ email });
     const user = {
-      userId: isUserExist._id,
-      email: isUserExist.email, 
+      _id: isUserExist._id,
+      email: isUserExist.email,
       userName: isUserExist.userName,
       mobile: isUserExist.mobile,
       isAdmin: isUserExist.isAdmin,
-      profileImage: isUserExist.profileImage ? isUserExist.profileImage : null
+      profileImage: isUserExist.profileImage ? isUserExist.profileImage : null,
     };
     if (!isUserExist) {
       return res
         .status(404)
         .json({ success: false, message: "User not Exist" });
     }
+
+    if (user.isAdmin) {
+      return res.status(403).json({ success: false, message: "You are not a regular user" });
+    }
+
     const isPasswordMatch = await bcrypt.compare(
       password,
       isUserExist.password
@@ -75,6 +80,30 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
     console.log(error);
   }
+});
+
+router.put("/editProfile", async (req, res) => {
+  try {
+    console.log('hii',req.body)
+    const { _id, email, mobile, userName, profileImage } = req.body;
+    if (!_id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      _id, 
+      { userName, email, mobile, profileImage },
+      { new: true, select: "-password" }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {}
 });
 
 module.exports = router;

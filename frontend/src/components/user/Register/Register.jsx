@@ -14,31 +14,25 @@ import * as yup from "yup";
 const Register = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    userName: "",
-    email: "",
-    mobile: "",
-    password: "",
-  });
-
-  const handleInputChanges = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
   //Form Validation Schema
   const schema = yup.object().shape({
-    userName: yup.string().required("Username is required"),
-    email: yup.string().email("Email is invalid").required("Email is required"),
+    userName: yup
+      .string()
+      .transform((value) => value.trim())
+      .required("Username is required"),
     password: yup
       .string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
+    email: yup
+      .string()
+      .transform((value) => value.trim())
+      .email("Email is invalid")
+      .required("Email is required"),
+
     mobile: yup
       .string()
+      .transform((value) => value.trim())
       .matches(/^\d{10}$/, "Mobile number must be 10 digits")
       .required("Mobile number is required"),
   });
@@ -48,6 +42,7 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -61,12 +56,7 @@ const Register = () => {
       );
       if (response.data.success) {
         toast.success(response.data.message);
-        setFormData({
-          userName: "",
-          email: "",
-          mobile: "",
-          password: "",
-        });
+        reset(); // Reset form on successful registration
         navigate("/login");
       } else {
         toast.error(response.data.message);
@@ -92,9 +82,6 @@ const Register = () => {
             <i className="fas fa-user input-icon" style={{ top: "40%" }}></i>
             <input
               {...register("userName")}
-              name="userName"
-              value={formData.userName}
-              onChange={handleInputChanges}
               className="form_inputs"
               placeholder="Enter your Username"
               required
@@ -109,9 +96,6 @@ const Register = () => {
             <i className="fas fa-phone input-icon" style={{ top: "45%" }}></i>
             <input
               {...register("mobile")}
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleInputChanges}
               className="form_inputs"
               placeholder="Enter your Phone Number"
               required
@@ -126,9 +110,6 @@ const Register = () => {
             <i className="fas fa-envelope input-icon"></i>
             <input
               {...register("email")}
-              name="email"
-              value={formData.email}
-              onChange={handleInputChanges}
               className="form_inputs"
               placeholder="Enter your Email"
               required
@@ -143,9 +124,6 @@ const Register = () => {
             <i className="fas fa-lock lock" style={{ top: "27%" }}></i>
             <input
               {...register("password")}
-              name="password"
-              value={formData.password}
-              onChange={handleInputChanges}
               className="form_inputs"
               placeholder="Enter your Password"
               required
@@ -158,8 +136,8 @@ const Register = () => {
             )}
 
             <label className="toggle-password">
-              <input type="checkbox" />
-              Show Password
+              {/* <input type="checkbox" />
+              Show Password */}
             </label>
           </div>
           <button type="submit" className="btn-Submit">

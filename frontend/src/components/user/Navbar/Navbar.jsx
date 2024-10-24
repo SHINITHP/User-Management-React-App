@@ -38,7 +38,7 @@ const Navbar = () => {
               justifyContent: "center",
             }}
           >
-            <img className="profile-pic" alt="Profile Picture" />
+            <img className="profile-pic" src={user?.profileImage || ""} alt="Profile Picture" />
             <h1
               className="profile-name"
               onClick={() => navigate("/profile")}
